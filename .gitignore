@@ -1,0 +1,22 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+.deploy-dist/
+.deploy-staging/
+logs/
+.workbuddy/
+.edgeone/
+
+# Local/generated artifacts from an unrelated logo preview app.
+logo/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+*.local
