@@ -20,7 +20,7 @@ export const MOCK_TOOLS: ITool[] = [
     icon: 'logos/5b3fb7df3a9e535a-comet-penguin.webp',
     category: '实用工具',
     type: 'external',
-    url: 'https://xiaoqin-d0g0prppaa09e675e-1303050076.tcloudbaseapp.com/',
+    url: 'https://yxqhuqin222-star.github.io/renxiao/',
     sortOrder: 1,
     createdAt: '2024-01-01T00:00:00.000Z',
     source: 'mock',
