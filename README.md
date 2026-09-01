@@ -13,6 +13,7 @@ https://yxqhuqin222-star.github.io/paltform/#/
 - 工具卡片支持三类入口：占位工具、内置或详情页工具、外部链接工具。
 - 当前内置示例工具里，「人效成本监控」会打开外部 GitHub Pages 页面：https://yxqhuqin222-star.github.io/renxiao/。
 - 工具管理页支持添加、编辑、删除工具，创建或删除分类，并支持导入、导出工具配置 JSON。
+- 管理页「数据管理 → 保存到网站」可用 GitHub Token 将当前工具配置写入 docs/toolbox-state.json，并同步 public/toolbox-state.json 作为后续构建源；Token 只在本次浏览器请求中使用，不写入代码。保存成功后需等待 GitHub Pages 重新构建生效。
 - 路由使用 HashRouter，适合部署在 GitHub Pages 这类子路径静态托管环境。
 
 ## 公开页面文件
@@ -24,6 +25,7 @@ GitHub Pages 使用 main 分支的 docs/ 目录：
     routes.json
     assets/
     logos/
+    toolbox-state.json
     favicon.svg
     icons.svg
 

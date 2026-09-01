@@ -24,6 +24,7 @@ npx vite build --outDir "$ROOT/dist/client" --emptyOutDir
 # 2. HTML → dist/output/
 mkdir -p "$OUTPUT"
 find "$ROOT/dist/client" -maxdepth 1 \( -name '*.html' -o -name 'routes.json' \) -exec cp {} "$OUTPUT/" \;
+find "$ROOT/dist/client" -mindepth 1 -maxdepth 1 ! -name '*.html' ! -name 'routes.json' ! -name 'assets' -exec cp -R {} "$OUTPUT/" \;
 
 # 3. assets/ → dist/output_resource/（JS/CSS/字体，上传到 CDN）
 if [ -d "$ROOT/dist/client/assets" ]; then

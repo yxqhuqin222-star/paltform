@@ -3,8 +3,9 @@ import ToolIcon from '@/components/ToolIcon';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Check } from 'lucide-react';
+import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Check, CloudUpload } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -83,10 +84,31 @@ export default function ManagePage() {
     deleteCategory,
     exportData,
     importData,
+    publishToGitHub,
     resetToDefault,
+    onlineStateStatus,
   } = useToolboxStore();
 
   const sortedTools = useMemo(() => [...tools].sort((a, b) => a.sortOrder - b.sortOrder), [tools]);
+  const [githubToken, setGithubToken] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
+
+  const handlePublish = async () => {
+    const token = githubToken.trim();
+    if (!token) {
+      toast.error('请先输入 GitHub Token');
+      return;
+    }
+    setIsPublishing(true);
+    try {
+      await publishToGitHub(token);
+      toast.success('已保存到网站配置，等待 GitHub Pages 更新后全网生效');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '保存到网站失败');
+    } finally {
+      setIsPublishing(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -211,6 +233,32 @@ export default function ManagePage() {
 
           {/* Data Tab */}
           <TabsContent value="data" className="space-y-4 mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">保存到网站</CardTitle>
+                <CardDescription>把当前工具和分类写入 GitHub Pages 使用的公共配置文件</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Input
+                    type="password"
+                    value={githubToken}
+                    onChange={event => setGithubToken(event.target.value)}
+                    placeholder="粘贴有仓库写权限的 GitHub Token"
+                    autoComplete="off"
+                  />
+                  <Button onClick={handlePublish} disabled={isPublishing || !githubToken.trim()} className="gap-1.5">
+                    <CloudUpload className="size-4" />
+                    {isPublishing ? '保存中...' : '保存到网站'}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Token 只用于这次浏览器请求，不会写入代码。保存成功后，GitHub Pages 通常需要几十秒到几分钟更新。
+                  当前状态：{onlineStateStatus === 'loaded' ? '已读取网站配置' : onlineStateStatus === 'saved' ? '已提交保存' : onlineStateStatus === 'saving' ? '正在保存' : onlineStateStatus === 'local-only' ? '使用本地配置' : onlineStateStatus === 'error' ? '保存失败' : '读取中'}。
+                </p>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">导入导出</CardTitle>
