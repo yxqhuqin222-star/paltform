@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "exportedAt": "2026-09-01T00:00:00.000Z",
+  "exportedAt": "2026-11-23T04:05:03.434Z",
   "tools": [
     {
       "id": "1",
@@ -67,6 +67,17 @@
       "type": "placeholder",
       "sortOrder": 6,
       "createdAt": "2024-01-01T00:00:00.000Z",
+      "source": "mock"
+    },
+    {
+      "id": "weekly-report",
+      "name": "高中周报",
+      "description": "上传两份底表，更新总表并导出周报图片",
+      "icon": "logos/62f4eb9ac022c1ad-whale-16.png",
+      "category": "实用工具",
+      "type": "builtin",
+      "sortOrder": 7,
+      "createdAt": "2026-11-23T00:00:00.000Z",
       "source": "mock"
     }
   ],

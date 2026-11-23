@@ -1,4 +1,4 @@
-// EXPORTS: ITool, MOCK_TOOLS
+// EXPORTS: ITool, MOCK_TOOLS, WEEKLY_REPORT_TOOL
 export interface ITool {
   id: string
   name: string
@@ -10,6 +10,18 @@ export interface ITool {
   sortOrder: number
   createdAt: string
   source?: 'mock' | 'user'
+}
+
+export const WEEKLY_REPORT_TOOL: ITool = {
+  id: 'weekly-report',
+  name: '高中周报',
+  description: '上传两份底表，更新总表并导出周报图片',
+  icon: 'logos/62f4eb9ac022c1ad-whale-16.png',
+  category: '实用工具',
+  type: 'builtin',
+  sortOrder: 7,
+  createdAt: '2026-11-23T00:00:00.000Z',
+  source: 'mock',
 }
 
 export const MOCK_TOOLS: ITool[] = [
@@ -80,4 +92,5 @@ export const MOCK_TOOLS: ITool[] = [
     createdAt: '2024-01-01T00:00:00.000Z',
     source: 'mock',
   },
+  WEEKLY_REPORT_TOOL,
 ]

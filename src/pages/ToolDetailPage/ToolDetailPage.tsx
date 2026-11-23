@@ -1,10 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertCircle } from 'lucide-react';
+import { ArrowLeft, AlertCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { WEEKLY_REPORT_TOOL } from '@/data/topbar';
 import { useToolboxStore } from '@/hooks/use-toolbox-store';
 import ToolIcon from '@/components/ToolIcon';
+
+const LOCAL_WEEKLY_REPORT_URL = 'http://127.0.0.1:8015/#/tool/5';
 
 export default function ToolDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +35,7 @@ export default function ToolDetailPage() {
     );
   }
 
+  const isWeeklyReport = tool.id === WEEKLY_REPORT_TOOL.id && tool.type === 'builtin';
   const relatedTools = tools.filter((t) => t.id !== tool.id && t.category === tool.category);
 
   return (
@@ -64,12 +68,28 @@ export default function ToolDetailPage() {
         <Card className={tool.type === 'iframe' ? 'min-h-[400px]' : 'min-h-[220px]'}>
           <CardHeader>
             <CardTitle className="text-base">工具操作区</CardTitle>
-            <CardDescription>
-              {tool.type === 'iframe' ? '嵌入工具页面' : tool.type === 'builtin' ? '内置工具' : tool.type === 'external' ? '外部链接' : '占位工具'}
-            </CardDescription>
+            {isWeeklyReport ? (
+              <CardDescription>上传和导出由 Mac 上的周报服务处理。</CardDescription>
+            ) : (
+              <CardDescription>
+                {tool.type === 'iframe' ? '嵌入工具页面' : tool.type === 'builtin' ? '内置工具' : tool.type === 'external' ? '外部链接' : '占位工具'}
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent>
-            {tool.type === 'iframe' && tool.url ? (
+            {isWeeklyReport ? (
+              <div className="space-y-3">
+                <Button asChild className="min-h-11">
+                  <a href={LOCAL_WEEKLY_REPORT_URL} target="_blank" rel="noopener noreferrer">
+                    打开本地高中周报
+                    <ExternalLink aria-hidden="true" />
+                  </a>
+                </Button>
+                <p className="text-sm text-muted-foreground">
+                  如果打不开，请在运行周报的 Mac 上双击「启动本地平台.command」，再打开此入口。
+                </p>
+              </div>
+            ) : tool.type === 'iframe' && tool.url ? (
               <iframe
                 src={tool.url}
                 title={tool.name}
@@ -121,7 +141,13 @@ export default function ToolDetailPage() {
             <CardTitle className="text-base">使用说明</CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground space-y-2">
-            {tool.type === 'placeholder' ? (
+            {isWeeklyReport ? (
+              <ol className="list-decimal space-y-2 pl-5">
+                <li>选择「渠道价体底表」「渠道价体-年级底表」和数据日期。</li>
+                <li>关闭 Mac 上的总表，点击「上传并更新总表」。</li>
+                <li>点击「导出四张图片」，下载所选日期的总计和渠道图片 ZIP。</li>
+              </ol>
+            ) : tool.type === 'placeholder' ? (
               <>
                 <p>• 此工具目前为占位状态，实际功能待开发接入。</p>
                 <p>• 你可以在管理页将工具类型修改为 iframe 类型，并填入工具 URL 来嵌入现有工具页面。</p>

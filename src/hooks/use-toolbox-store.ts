@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { scopedStorage, logger } from '@lark-apaas/client-toolkit-lite';
-import { type ITool, MOCK_TOOLS } from '@/data/topbar';
+import { type ITool, MOCK_TOOLS, WEEKLY_REPORT_TOOL } from '@/data/topbar';
 
 export interface ICategory {
   id: string;
@@ -12,7 +12,7 @@ export interface ICategory {
 const TOOLS_KEY = '__toolbox_tools';
 const CATEGORIES_KEY = '__toolbox_categories';
 const VERSION_KEY = '__toolbox_defaults_version';
-const DEFAULTS_VERSION = '20240823-4';
+const DEFAULTS_VERSION = '20240823-5';
 const GITHUB_OWNER = 'yxqhuqin222-star';
 const GITHUB_REPO = 'paltform';
 const GITHUB_BRANCH = 'main';
@@ -56,6 +56,13 @@ function loadStoredState(): StoredState {
 
     if (storedVersion === DEFAULTS_VERSION) {
       return { tools: storedTools, categories: storedCategories, version: storedVersion, hasStoredState };
+    }
+
+    if (storedVersion === '20240823-4') {
+      const tools = storedTools.some(tool => tool.id === WEEKLY_REPORT_TOOL.id)
+        ? storedTools
+        : [...storedTools, WEEKLY_REPORT_TOOL];
+      return { tools, categories: storedCategories, version: DEFAULTS_VERSION, hasStoredState };
     }
 
     // 默认数据版本已升级：替换所有内置 mock 项，保留用户新增项
