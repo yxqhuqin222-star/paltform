@@ -12,6 +12,7 @@ export interface ICategory {
 const TOOLS_KEY = '__toolbox_tools';
 const CATEGORIES_KEY = '__toolbox_categories';
 const VERSION_KEY = '__toolbox_defaults_version';
+const PAGES_SYNC_KEY = '__toolbox_pages_synced_at';
 const DEFAULTS_VERSION = '20240823-5';
 const GITHUB_OWNER = 'yxqhuqin222-star';
 const GITHUB_REPO = 'paltform';
@@ -26,6 +27,7 @@ const DEFAULT_CATEGORIES: ICategory[] = [
 export interface ToolboxExport {
   schemaVersion: string;
   exportedAt: string;
+  publishedFrom?: 'local-8015';
   tools: ITool[];
   categories: ICategory[];
 }
@@ -186,12 +188,19 @@ export function useToolboxStore() {
   useEffect(() => {
     if (initial.hasStoredState) {
       setOnlineStateStatus('local-only');
-      return;
     }
     let cancelled = false;
     loadPublicState()
       .then(data => {
         if (cancelled) return;
+        if (data.publishedFrom === 'local-8015' && typeof data.exportedAt === 'string') {
+          const lastSync = scopedStorage.getItem(PAGES_SYNC_KEY) ?? '';
+          if (data.exportedAt <= lastSync && initial.hasStoredState) return;
+          saveStoredState(data.tools, data.categories);
+          scopedStorage.setItem(PAGES_SYNC_KEY, data.exportedAt);
+        } else if (initial.hasStoredState) {
+          return;
+        }
         setTools(data.tools);
         setCategories(data.categories);
         setOnlineStateStatus('loaded');

@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { WEEKLY_REPORT_TOOL } from '@/data/topbar';
 import { useToolboxStore } from '@/hooks/use-toolbox-store';
 import ToolIcon from '@/components/ToolIcon';
+import WeeklyReportDownloads from './WeeklyReportDownloads';
 
 const LOCAL_WEEKLY_REPORT_URL = 'http://127.0.0.1:8015/#/tool/5';
 
@@ -134,6 +135,8 @@ export default function ToolDetailPage() {
             )}
           </CardContent>
         </Card>
+
+        {isWeeklyReport && <WeeklyReportDownloads />}
 
         {/* Instructions */}
         <Card>
