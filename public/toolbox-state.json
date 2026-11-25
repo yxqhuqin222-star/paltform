@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "exportedAt": "2026-11-23T04:05:03.434Z",
+  "exportedAt": "2026-11-25T09:41:36.066Z",
   "tools": [
     {
       "id": "1",
@@ -33,17 +33,6 @@
       "category": "实用工具",
       "type": "placeholder",
       "sortOrder": 3,
-      "createdAt": "2024-01-01T00:00:00.000Z",
-      "source": "mock"
-    },
-    {
-      "id": "4",
-      "name": "Markdown 预览",
-      "description": "实时预览 Markdown 渲染效果",
-      "icon": "logos/59a9ebe6e18dc63b-puffball-mushroom-2.webp",
-      "category": "文字处理",
-      "type": "placeholder",
-      "sortOrder": 4,
       "createdAt": "2024-01-01T00:00:00.000Z",
       "source": "mock"
     },
@@ -94,5 +83,6 @@
       "icon": "logos/b8825dec2a4b3eb6-maltese.webp",
       "source": "mock"
     }
-  ]
+  ],
+  "publishedFrom": "local-8015"
 }
