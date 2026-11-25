@@ -14,6 +14,7 @@ https://yxqhuqin222-star.github.io/paltform/#/
 - 当前内置示例工具里，「人效成本监控」会打开外部 GitHub Pages 页面：https://yxqhuqin222-star.github.io/renxiao/。
 - 「高中周报」可以从工具广场打开，上传两份底表、更新总表和导出图片由 Mac 上的本地服务处理。请在运行周报的 Mac 上先双击「启动本地平台.command」。
 - 从本地服务发布的周报按日期出现在「高中周报 → 已发布周报」，提供当天的 Excel 和四图 ZIP。本地工具清单保存后也会同步到公开站点。
+- GitHub Pages 工具广场提供「初中周报」入口。上传 Excel、保存历史期次和生成 PNG 由运行「启动本地平台.command」的 Mac 处理。
 - 工具管理页支持添加、编辑、删除工具，创建或删除分类，并支持导入、导出工具配置 JSON。
 - 管理页「数据管理 → 保存到网站」可用 GitHub Token 将当前工具配置写入 docs/toolbox-state.json，并同步 public/toolbox-state.json 作为后续构建源；Token 只在本次浏览器请求中使用，不写入代码。保存成功后需等待 GitHub Pages 重新构建生效。
 - 路由使用 HashRouter，适合部署在 GitHub Pages 这类子路径静态托管环境。

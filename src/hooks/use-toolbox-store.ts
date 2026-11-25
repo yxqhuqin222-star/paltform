@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { scopedStorage, logger } from '@lark-apaas/client-toolkit-lite';
-import { type ITool, MOCK_TOOLS, WEEKLY_REPORT_TOOL } from '@/data/topbar';
+import { type ITool, JUNIOR_WEEKLY_REPORT_TOOL, MOCK_TOOLS, WEEKLY_REPORT_TOOL } from '@/data/topbar';
 
 export interface ICategory {
   id: string;
@@ -13,7 +13,8 @@ const TOOLS_KEY = '__toolbox_tools';
 const CATEGORIES_KEY = '__toolbox_categories';
 const VERSION_KEY = '__toolbox_defaults_version';
 const PAGES_SYNC_KEY = '__toolbox_pages_synced_at';
-const DEFAULTS_VERSION = '20240823-5';
+const DEFAULTS_VERSION = '20240823-7';
+const RETIRED_MARKDOWN_ID = '4';
 const GITHUB_OWNER = 'yxqhuqin222-star';
 const GITHUB_REPO = 'paltform';
 const GITHUB_BRANCH = 'main';
@@ -27,7 +28,7 @@ const DEFAULT_CATEGORIES: ICategory[] = [
 export interface ToolboxExport {
   schemaVersion: string;
   exportedAt: string;
-  publishedFrom?: 'local-8015';
+  publishedFrom?: 'local-8015' | 'pages-release';
   tools: ITool[];
   categories: ICategory[];
 }
@@ -60,10 +61,12 @@ function loadStoredState(): StoredState {
       return { tools: storedTools, categories: storedCategories, version: storedVersion, hasStoredState };
     }
 
-    if (storedVersion === '20240823-4') {
-      const tools = storedTools.some(tool => tool.id === WEEKLY_REPORT_TOOL.id)
-        ? storedTools
-        : [...storedTools, WEEKLY_REPORT_TOOL];
+    const retainedTools = storedTools.filter(tool => tool.id !== RETIRED_MARKDOWN_ID);
+    if (['20240823-4', '20240823-5', '20240823-6'].includes(storedVersion)) {
+      const defaults = storedVersion === '20240823-4'
+        ? [WEEKLY_REPORT_TOOL, JUNIOR_WEEKLY_REPORT_TOOL]
+        : [JUNIOR_WEEKLY_REPORT_TOOL];
+      const tools = [...retainedTools, ...defaults.filter(tool => !retainedTools.some(item => item.id === tool.id))];
       return { tools, categories: storedCategories, version: DEFAULTS_VERSION, hasStoredState };
     }
 
@@ -72,7 +75,7 @@ function loadStoredState(): StoredState {
     const mockCatIds = new Set(DEFAULT_CATEGORIES.map(c => c.id));
 
     const mergedTools = [
-      ...storedTools.filter(t => !mockToolIds.has(t.id)),
+      ...retainedTools.filter(t => !mockToolIds.has(t.id)),
       ...MOCK_TOOLS,
     ];
     const mergedCategories = [
@@ -193,7 +196,7 @@ export function useToolboxStore() {
     loadPublicState()
       .then(data => {
         if (cancelled) return;
-        if (data.publishedFrom === 'local-8015' && typeof data.exportedAt === 'string') {
+        if ((data.publishedFrom === 'local-8015' || data.publishedFrom === 'pages-release') && typeof data.exportedAt === 'string') {
           const lastSync = scopedStorage.getItem(PAGES_SYNC_KEY) ?? '';
           if (data.exportedAt <= lastSync && initial.hasStoredState) return;
           saveStoredState(data.tools, data.categories);

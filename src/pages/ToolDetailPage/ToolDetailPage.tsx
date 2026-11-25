@@ -3,12 +3,13 @@ import { ArrowLeft, AlertCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { WEEKLY_REPORT_TOOL } from '@/data/topbar';
+import { JUNIOR_WEEKLY_REPORT_TOOL, WEEKLY_REPORT_TOOL } from '@/data/topbar';
 import { useToolboxStore } from '@/hooks/use-toolbox-store';
 import ToolIcon from '@/components/ToolIcon';
 import WeeklyReportDownloads from './WeeklyReportDownloads';
 
 const LOCAL_WEEKLY_REPORT_URL = 'http://127.0.0.1:8015/#/tool/5';
+const LOCAL_JUNIOR_REPORT_URL = 'http://127.0.0.1:8015/#/tool/junior-weekly-report';
 
 export default function ToolDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -37,6 +38,8 @@ export default function ToolDetailPage() {
   }
 
   const isWeeklyReport = tool.id === WEEKLY_REPORT_TOOL.id && tool.type === 'builtin';
+  const isJuniorReport = tool.id === JUNIOR_WEEKLY_REPORT_TOOL.id && tool.type === 'builtin';
+  const localReportUrl = isJuniorReport ? LOCAL_JUNIOR_REPORT_URL : isWeeklyReport ? LOCAL_WEEKLY_REPORT_URL : null;
   const relatedTools = tools.filter((t) => t.id !== tool.id && t.category === tool.category);
 
   return (
@@ -69,7 +72,7 @@ export default function ToolDetailPage() {
         <Card className={tool.type === 'iframe' ? 'min-h-[400px]' : 'min-h-[220px]'}>
           <CardHeader>
             <CardTitle className="text-base">工具操作区</CardTitle>
-            {isWeeklyReport ? (
+            {localReportUrl ? (
               <CardDescription>上传和导出由 Mac 上的周报服务处理。</CardDescription>
             ) : (
               <CardDescription>
@@ -78,11 +81,11 @@ export default function ToolDetailPage() {
             )}
           </CardHeader>
           <CardContent>
-            {isWeeklyReport ? (
+            {localReportUrl ? (
               <div className="space-y-3">
                 <Button asChild className="min-h-11">
-                  <a href={LOCAL_WEEKLY_REPORT_URL} target="_blank" rel="noopener noreferrer">
-                    打开本地高中周报
+                  <a href={localReportUrl} target="_blank" rel="noopener noreferrer">
+                    打开本地{tool.name}
                     <ExternalLink aria-hidden="true" />
                   </a>
                 </Button>
@@ -149,6 +152,11 @@ export default function ToolDetailPage() {
                 <li>选择「渠道价体底表」「渠道价体-年级底表」和数据日期。</li>
                 <li>关闭 Mac 上的总表，点击「上传并更新总表」。</li>
                 <li>点击「导出四张图片」，下载所选日期的总计和渠道图片 ZIP。</li>
+              </ol>
+            ) : isJuniorReport ? (
+              <ol className="list-decimal space-y-2 pl-5">
+                <li>在运行周报的 Mac 上打开「启动本地平台.command」。</li>
+                <li>上传一份最新流量期次的 Excel，再点击「下载 PNG 长图」。</li>
               </ol>
             ) : tool.type === 'placeholder' ? (
               <>
