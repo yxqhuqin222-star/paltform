@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "exportedAt": "2026-11-25T09:53:47.745Z",
+  "exportedAt": "2026-11-26T01:41:43.938Z",
   "tools": [
     {
       "id": "1",
@@ -72,7 +72,7 @@
     {
       "id": "junior-weekly-report",
       "name": "初中周报",
-      "description": "上传最新期次的 Excel，导出渠道价体对比长图",
+      "description": "上传最新期次的 Excel，导出渠道价体横排图",
       "icon": "logos/62f4eb9ac022c1ad-whale-16.png",
       "category": "实用工具",
       "type": "builtin",

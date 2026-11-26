@@ -156,7 +156,7 @@ export default function ToolDetailPage() {
             ) : isJuniorReport ? (
               <ol className="list-decimal space-y-2 pl-5">
                 <li>在运行周报的 Mac 上打开「启动本地平台.command」。</li>
-                <li>上传一份最新流量期次的 Excel，再点击「下载 PNG 长图」。</li>
+                <li>上传一份最新流量期次的 Excel，再点击「下载 PNG」。同渠道的价体会在图片中并排展示。</li>
               </ol>
             ) : tool.type === 'placeholder' ? (
               <>

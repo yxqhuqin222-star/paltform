@@ -27,7 +27,7 @@ export const WEEKLY_REPORT_TOOL: ITool = {
 export const JUNIOR_WEEKLY_REPORT_TOOL: ITool = {
   id: 'junior-weekly-report',
   name: '初中周报',
-  description: '上传最新期次的 Excel，导出渠道价体对比长图',
+  description: '上传最新期次的 Excel，导出渠道价体横排图',
   icon: 'logos/62f4eb9ac022c1ad-whale-16.png',
   category: '实用工具',
   type: 'builtin',
